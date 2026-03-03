@@ -4,10 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 st.title("📺 NETFLIX DATA ANALYSIS IN STREAMLIT")
-
-# -----------------------------
-# FILE UPLOAD
-# -----------------------------
 upload_file = st.file_uploader("Upload Netflix CSV File", type=['csv'])
 
 if upload_file:
@@ -17,12 +13,9 @@ if upload_file:
     st.subheader("Dataset Preview")
     st.dataframe(df)
 
-    # -----------------------------
-    # SIDEBAR FILTERS
-    # -----------------------------
     st.sidebar.header("Filters")
 
-    # 1️⃣ Filter by Type
+    # Filter by Type
     if "type" in df.columns:
         selected_type = st.sidebar.selectbox(
             "Select Content Type",
@@ -30,7 +23,7 @@ if upload_file:
         )
         df = df[df["type"] == selected_type]
 
-    # 2️⃣ Filter by Country
+    # Filter by Country
     if "country" in df.columns:
         country_list = df["country"].dropna().unique()
         selected_country = st.sidebar.selectbox(
@@ -39,7 +32,7 @@ if upload_file:
         )
         df = df[df["country"] == selected_country]
 
-    # 3️⃣ Filter by Rating
+    # Filter by Rating
     if "rating" in df.columns:
         rating_list = df["rating"].dropna().unique()
         selected_rating = st.sidebar.selectbox(
@@ -51,9 +44,6 @@ if upload_file:
     st.subheader("Filtered Data")
     st.dataframe(df)
 
-    # -----------------------------
-    # NUMERIC COLUMN SELECTION
-    # -----------------------------
     numeric_columns = df.select_dtypes(include=np.number).columns.tolist()
 
     selected_column = st.sidebar.selectbox(
@@ -61,9 +51,6 @@ if upload_file:
         numeric_columns
     )
 
-    # -----------------------------
-    # RANGE SLIDER
-    # -----------------------------
     min_val = float(df[selected_column].min())
     max_val = float(df[selected_column].max())
 
@@ -82,9 +69,6 @@ if upload_file:
     st.subheader("Range Filtered Data")
     st.dataframe(filtered_df)
 
-    # -----------------------------
-    # NUMPY STATISTICS
-    # -----------------------------
     st.subheader("NumPy Statistics")
 
     mean_val = np.mean(filtered_df[selected_column])
@@ -97,9 +81,8 @@ if upload_file:
     col2.write(f"Median: {round(median_val, 2)}")
     col3.write(f"Standard Deviation: {round(std_val, 2)}")
 
-    # -----------------------------
     # CHART TYPE
-    # -----------------------------
+   
     st.subheader("Select Chart Type")
 
     chart_type = st.radio(
